@@ -2,6 +2,8 @@
 
 - https://cloud.google.com/compute/docs/instances/create-hpc-vm
 - https://www.intel.com/content/www/us/en/high-performance-computing/hpc-platform-specification.html
+- Rahn, Tobias. Noise Estimation in HPC Cloud Networks. BS thesis. ETH Zurich, 2021.
+  https://www.research-collection.ethz.ch/handle/20.500.11850/513171
 
 Enable Compute Engine API
 - https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=400748927902
