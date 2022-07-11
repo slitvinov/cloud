@@ -4,6 +4,7 @@
 - https://www.intel.com/content/www/us/en/high-performance-computing/hpc-platform-specification.html
 - Rahn, Tobias. Noise Estimation in HPC Cloud Networks. BS thesis. ETH Zurich, 2021.
   https://www.research-collection.ethz.ch/handle/20.500.11850/513171
+- https://www.intel.com/content/www/us/en/develop/documentation/installation-guide-for-intel-oneapi-toolkits-linux/top/installation/install-using-package-managers/yum-dnf-zypper.html  
 
 Enable Compute Engine API
 - https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=400748927902
@@ -15,7 +16,12 @@ gcloud compute instances create aphros \
         --image-project=cloud-hpc-image-public \
         --maintenance-policy=TERMINATE \
         --machine-type=c2-standard-4 \
-        --metadata=google_install_mpi=--intel_mpi
+        --metadata=google_install_mpi=--intel_mpi \
+        --boot-disk-size=40GB
+```
+
+```
+gcloud compute instances delete aphros
 ```
 
 ```
@@ -26,5 +32,22 @@ aphros  europe-west6-a  c2-standard-4               10.172.0.2   34.65.237.51  R
 
 ```
 gcloud compute ssh aphros
-sudo google_install_mpi --intel_mpi
+tee > /tmp/oneAPI.repo << EOF
+[oneAPI]
+name=Intel® oneAPI repository
+baseurl=https://yum.repos.intel.com/oneapi
+enabled=1
+gpgcheck=1
+repo_gpgcheck=1
+gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+EOF
+sudo mv /tmp/oneAPI.repo /etc/yum.repos.d
+sudo yum install intel-basekit -y
+```
+
+```
+Error Summary
+-------------
+Disk Requirements:
+  At least 757MB more space needed on the / filesystem.
 ```
