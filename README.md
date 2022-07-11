@@ -11,13 +11,12 @@ Enable Compute Engine API
 
 ```
 gcloud compute instances create aphros \
-        --zone=europe-west6-a \
         --image-family=hpc-centos-7 \
         --image-project=cloud-hpc-image-public \
+        --machine-type=c2-standard-8 \
         --maintenance-policy=TERMINATE \
-        --machine-type=c2-standard-4 \
         --metadata=google_install_mpi=--intel_mpi \
-        --boot-disk-size=40GB
+        --zone=europe-west6-a
 ```
 
 ```
