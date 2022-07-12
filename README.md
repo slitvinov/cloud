@@ -54,5 +54,5 @@ sudo yum install intel-basekit intel-hpckit -y
 git clone https://github.com/cselab/aphros.git --branch icc
 cd aphros/src
 ../make/bootstrap
-make -j4 -k -f Makefile_legacy install APHROS_PREFIX=$HOME/.local USE_MPI=0 USE_HDF=0 USE_OPENCL=0 USE_AVX=0 USE_OPENMP=0 CXX=icpc CC=icc
+make -j4 -k -f Makefile_legacy APHROS_PREFIX=$HOME/.local USE_MPI=1 USE_HDF=0 USE_OPENCL=0 USE_AVX=1 USE_OPENMP=1 CXX=mpiicpc CC=icc
 ```
