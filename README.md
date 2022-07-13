@@ -1,5 +1,6 @@
 # cloud
 
+- https://cloud.google.com/solutions/hpc
 - https://cloud.google.com/compute/docs/instances/create-hpc-vm
 - https://www.intel.com/content/www/us/en/high-performance-computing/hpc-platform-specification.html
 - Rahn, Tobias. Noise Estimation in HPC Cloud Networks. BS thesis. ETH Zurich, 2021.
@@ -23,6 +24,8 @@ gcloud compute instances create aphros \
 
 ```
 gcloud compute instances delete aphros
+gcloud compute instances stop aphros
+gcloud compute instances start aphros
 ```
 
 ```
@@ -57,7 +60,7 @@ cd aphros/deploy
 . $HOME/.local/bin/ap.setenv
 mkdir build
 cd build
-cmake .. -DUSE_HYPRE=0
+cmake ..
 make -j4
 make install
 ```
@@ -66,10 +69,10 @@ make install
 cd aphros/src
 mkdir build
 cd build
-cmake .. -DUSE_HDF=0 -DUSE_BACKEND_CUBISM=1 -DUSE_BACKEND_LOCAL=1 -DUSE_BACKEND_NATIVE=1 -DUSE_HYPRE=0 -DMPI_C_COMPILER=mpiicc -DMPI_CXX_COMPILER=mpiicpc
+cmake .. -DUSE_HDF=0 -DUSE_BACKEND_CUBISM=1 -DUSE_BACKEND_LOCAL=1 -DUSE_BACKEND_NATIVE=1 -DMPI_C_COMPILER=mpiicc -DMPI_CXX_COMPILER=mpiicpc
 make -j 4
 make install
-make test
+CC=icc CXX=icpc make test
 ```
 
 ```
@@ -86,7 +89,8 @@ Install cmake
 wget https://github.com/Kitware/CMake/releases/download/v3.24.0-rc3/cmake-3.24.0-rc3.tar.gz
 tar zxf cmake-3.24.0-rc3.tar.gz
 cd cmake-3.24.0-rc3
-./bootstrap -- -DCMAKE_USE_OPENSSL=OFF
+sudo yum install openssl-devel -y
+./bootstrap
 make -j4
 sudo make install
 ```
