@@ -26,12 +26,6 @@ gcloud compute instances delete aphros
 ```
 
 ```
-Created [https://www.googleapis.com/compute/v1/projects/aphros-sim/zones/europe-west6-a/instances/aphros].
-NAME    ZONE            MACHINE_TYPE   PREEMPTIBLE  INTERNAL_IP  EXTERNAL_IP   STATUS
-aphros  europe-west6-a  c2-standard-4               10.172.0.2   34.65.237.51  RUNNING
-```
-
-```
 gcloud compute ssh aphros --zone=europe-west6-a
 ```
 
@@ -58,25 +52,41 @@ make -j4 -k -f Makefile_legacy APHROS_PREFIX=$HOME/.local USE_MPI=1 USE_HDF=0 US
 ```
 
 ```
-cmake .. -DUSE_HDF=0 -DUSE_BACKEND_CUBISM=0 -DUSE_BACKEND_LOCAL=1 -DUSE_BACKEND_NATIVE=1 -DFIND_HDF=0 -DMPI_C_COMPILER=mpiicc -DMPI_CXX_COMPILER=mpiicpc
+cd aphros/deploy
+./install_setenv $HOME/.aphros
+. $HOME/.local/bin/ap.setenv
+mkdir build
+cd build
+cmake .. -DUSE_HYPRE=0
+make -j4
+make install
 ```
 
+```
+cd aphros/src
+mkdir build
+cd build
+cmake .. -DUSE_HDF=0 -DUSE_BACKEND_CUBISM=1 -DUSE_BACKEND_LOCAL=1 -DUSE_BACKEND_NATIVE=1 -DUSE_HYPRE=0 -DMPI_C_COMPILER=mpiicc -DMPI_CXX_COMPILER=mpiicpc
+make -j 4
+make install
+make test
+```
 
 ```
 $ cat .ssh/config
 Host gc
-     HostName 34.65.91.133
+     HostName 34.65.237.51
      IdentityFile ~/.ssh/google_compute_engine
-$  gcloud compute ssh --verbosity=debug aphros
+     UserKnownHostsFile=/dev/null
+     StrictHostKeyChecking=no
 ```
 
 Install cmake
 ```
-$ wget https://github.com/Kitware/CMake/releases/download/v3.24.0-rc3/cmake-3.24.0-rc3.tar.gz
-$ tar zxf cmake-3.24.0-rc3.tar.gz
-$ cd cmake-3.24.0-rc3
-$ ./bootstrap -- -DCMAKE_USE_OPENSSL=OFF
-$ make -j4
-$ sudo make install
+wget https://github.com/Kitware/CMake/releases/download/v3.24.0-rc3/cmake-3.24.0-rc3.tar.gz
+tar zxf cmake-3.24.0-rc3.tar.gz
+cd cmake-3.24.0-rc3
+./bootstrap -- -DCMAKE_USE_OPENSSL=OFF
+make -j4
+sudo make install
 ```
-
