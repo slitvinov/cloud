@@ -32,7 +32,7 @@ aphros  europe-west6-a  c2-standard-4               10.172.0.2   34.65.237.51  R
 ```
 
 ```
-gcloud compute ssh aphros
+gcloud compute ssh aphros --zone=europe-west6-a
 ```
 
 ```
@@ -56,3 +56,27 @@ cd aphros/src
 ../make/bootstrap
 make -j4 -k -f Makefile_legacy APHROS_PREFIX=$HOME/.local USE_MPI=1 USE_HDF=0 USE_OPENCL=0 USE_AVX=1 USE_OPENMP=1 CXX=mpiicpc CC=icc
 ```
+
+```
+cmake .. -DUSE_HDF=0 -DUSE_BACKEND_CUBISM=0 -DUSE_BACKEND_LOCAL=1 -DUSE_BACKEND_NATIVE=1 -DFIND_HDF=0 -DMPI_C_COMPILER=mpiicc -DMPI_CXX_COMPILER=mpiicpc
+```
+
+
+```
+$ cat .ssh/config
+Host gc
+     HostName 34.65.91.133
+     IdentityFile ~/.ssh/google_compute_engine
+$  gcloud compute ssh --verbosity=debug aphros
+```
+
+Install cmake
+```
+$ wget https://github.com/Kitware/CMake/releases/download/v3.24.0-rc3/cmake-3.24.0-rc3.tar.gz
+$ tar zxf cmake-3.24.0-rc3.tar.gz
+$ cd cmake-3.24.0-rc3
+$ ./bootstrap -- -DCMAKE_USE_OPENSSL=OFF
+$ make -j4
+$ sudo make install
+```
+
