@@ -2,6 +2,7 @@
 
 - https://cloud.google.com/solutions/hpc
 - https://cloud.google.com/compute/docs/instances/create-hpc-vm
+- https://cloud.google.com/architecture/parallel-file-systems-for-hpc
 - https://www.intel.com/content/www/us/en/high-performance-computing/hpc-platform-specification.html
 - Rahn, Tobias. Noise Estimation in HPC Cloud Networks. BS thesis. ETH Zurich, 2021.
   https://www.research-collection.ethz.ch/handle/20.500.11850/513171
