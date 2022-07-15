@@ -46,6 +46,29 @@ deployment_groups:
           google_install_mpi --intel_comp_meta
         destination: /var/tmp/install_intel_compute.sh
 
+  - source: modules/scripts/startup-script
+    kind: terraform
+    id: startup-login
+    settings:
+      runners:
+      - type: shell
+        content: |
+          #!/bin/bash
+          yum -y update google-hpc-compute
+          google_install_mpi --intel_comp_meta
+          cat >/tmp/oneAPI.repo << '!'
+          [oneAPI]
+          name=Intel® oneAPI repository
+          baseurl=https://yum.repos.intel.com/oneapi
+          enabled=1
+          gpgcheck=1
+          repo_gpgcheck=1
+          gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.PUB
+          !
+          mv /tmp/oneAPI.repo /etc/yum.repos.d
+          yum install intel-basekit intel-hpckit -y
+        destination: /var/tmp/login.sh
+
   - source: community/modules/compute/SchedMD-slurm-on-gcp-partition
     kind: terraform
     id: debug_partition
@@ -90,4 +113,4 @@ deployment_groups:
     - homefs
     - slurm_controller
     settings:
-      login_startup_script: $(startup-compute.startup_script)
+      login_startup_script: $(startup-login.startup_script)

@@ -49,6 +49,7 @@ gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.
 !
 sudo mv /tmp/oneAPI.repo /etc/yum.repos.d
 sudo yum install intel-basekit intel-hpckit -y
+. /opt/intel/oneapi/setvars.sh
 ```
 
 ```
