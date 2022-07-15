@@ -3,6 +3,7 @@
 - https://cloud.google.com/solutions/hpc
 - https://cloud.google.com/compute/docs/instances/create-hpc-vm
 - https://cloud.google.com/architecture/parallel-file-systems-for-hpc
+- https://cloud.google.com/hpc-toolkit/docs/quickstarts/slurm-cluster
 - https://www.intel.com/content/www/us/en/high-performance-computing/hpc-platform-specification.html
 - Rahn, Tobias. Noise Estimation in HPC Cloud Networks. BS thesis. ETH Zurich, 2021.
   https://www.research-collection.ethz.ch/handle/20.500.11850/513171
@@ -10,6 +11,9 @@
 
 Enable Compute Engine API
 - https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=400748927902
+
+Enable Cloud Filestore API
+https://console.cloud.google.com/apis/library/file.googleapis.com?project=aphros-sim
 
 ```
 gcloud compute instances create aphros \
@@ -94,4 +98,16 @@ sudo yum install openssl-devel -y
 ./bootstrap
 make -j4
 sudo make install
+```
+
+Install `ghpc`
+- https://cloud.google.com/hpc-toolkit/docs/setup/install-dependencies
+
+```
+wget -O - https://apt.releases.hashicorp.com/gpg | gpg --dearmor > /tmp/x
+sudo mv /tmp/x /usr/share/keyrings/hashicorp-archive-keyring.gp
+echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+sudo apt update
+sudo apt install terraform
+sudo apt install packer
 ```
