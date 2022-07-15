@@ -49,7 +49,6 @@ gpgkey=https://yum.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS.
 !
 sudo mv /tmp/oneAPI.repo /etc/yum.repos.d
 sudo yum install intel-basekit intel-hpckit -y
-. /opt/intel/oneapi/setvars.sh
 ```
 
 ```
@@ -83,10 +82,12 @@ CC=icc CXX=icpc make test
 ```
 $ cat .ssh/config
 Host gc
-     HostName 34.65.237.51
+     HostName 34.65.212.137
+     ForwardX11Trusted yes
+     ForwardX11 yes
      IdentityFile ~/.ssh/google_compute_engine
-     UserKnownHostsFile=/dev/null
      StrictHostKeyChecking=no
+     UserKnownHostsFile=/dev/null
 ```
 
 Install cmake

@@ -1,10 +1,10 @@
 ---
 
-blueprint_name: aphros-cluster
+blueprint_name: aphros
 
 vars:
   project_id:  aphros-sim
-  deployment_name: aphros-cluster
+  deployment_name: aphros
   region: europe-west6
   zone: europe-west6-a
 
