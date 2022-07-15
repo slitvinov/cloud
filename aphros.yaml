@@ -3,10 +3,10 @@
 blueprint_name: aphros-cluster
 
 vars:
-  project_id:  ## Set GCP Project ID Here ##
-  deployment_name: hpc-intel-select
-  region: us-central1
-  zone: us-central1-c
+  project_id:  aphros-sim
+  deployment_name: aphros-cluster
+  region: europe-west6
+  zone: europe-west6-a
 
 deployment_groups:
 - group: primary
