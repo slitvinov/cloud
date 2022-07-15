@@ -46,7 +46,6 @@ deployment_groups:
           google_install_mpi --intel_comp_meta
         destination: /var/tmp/install_intel_compute.sh
 
-  # This debug_partition will work out of the box without requesting additional GCP quota.
   - source: community/modules/compute/SchedMD-slurm-on-gcp-partition
     kind: terraform
     id: debug_partition
@@ -60,7 +59,6 @@ deployment_groups:
       exclusive: false
       machine_type: n2-standard-2
 
-  # This compute_partition is far more performant than debug_partition but may require requesting GCP quotas first.
   - source: community/modules/compute/SchedMD-slurm-on-gcp-partition
     kind: terraform
     id: compute_partition
@@ -83,7 +81,6 @@ deployment_groups:
       login_node_count: 1
       controller_startup_script: $(startup-controller.startup_script)
       compute_startup_script: $(startup-compute.startup_script)
-
 
   - source: community/modules/scheduler/SchedMD-slurm-on-gcp-login-node
     kind: terraform
