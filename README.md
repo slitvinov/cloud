@@ -16,6 +16,7 @@ Enable Compute Engine API
 Enable Cloud Filestore API
 https://console.cloud.google.com/apis/library/file.googleapis.com?project=aphros-sim
 
+Create a single node instanse
 ```
 gcloud compute instances create aphros \
         --boot-disk-size=40GB \
@@ -28,16 +29,39 @@ gcloud compute instances create aphros \
 #
 ```
 
+Work with an instance
 ```
+gcloud compute instances list
 gcloud compute instances delete aphros
 gcloud compute instances stop aphros
 gcloud compute instances start aphros
 ```
 
+After login to aphros instance
+```
+. ~/.local/bin/ap.setenv
+. /opt/intel/oneapi/setvars.sh
+```
+
+ssh to an instance
 ```
 gcloud compute ssh aphros --zone=europe-west6-a
 ```
 
+or
+
+```
+$ cat .ssh/config
+Host gc
+     HostName 34.65.212.137
+     ForwardX11Trusted yes
+     ForwardX11 yes
+     IdentityFile ~/.ssh/google_compute_engine
+     StrictHostKeyChecking=no
+     UserKnownHostsFile=/dev/null
+```
+
+Intall intell MPI
 ```
 cat >/tmp/oneAPI.repo << '!'
 [oneAPI]
@@ -53,11 +77,24 @@ sudo yum install intel-basekit intel-hpckit -y
 . /opt/intel/oneapi/setvars.sh
 ```
 
+Compile aphros without cmake
 ```
 git clone https://github.com/cselab/aphros.git --branch icc
 cd aphros/src
 ../make/bootstrap
 make -j4 -k -f Makefile_legacy APHROS_PREFIX=$HOME/.local USE_MPI=1 USE_HDF=0 USE_OPENCL=0 USE_AVX=1 USE_OPENMP=1 CXX=mpiicpc CC=icc
+```
+
+Compile aphros with cmake
+Install cmake
+```
+wget https://github.com/Kitware/CMake/releases/download/v3.24.0-rc3/cmake-3.24.0-rc3.tar.gz
+tar zxf cmake-3.24.0-rc3.tar.gz
+cd cmake-3.24.0-rc3
+sudo yum install openssl-devel -y
+./bootstrap
+make -j4
+sudo make install
 ```
 
 ```
@@ -81,28 +118,6 @@ make install
 CC=icc CXX=icpc make test
 ```
 
-```
-$ cat .ssh/config
-Host gc
-     HostName 34.65.212.137
-     ForwardX11Trusted yes
-     ForwardX11 yes
-     IdentityFile ~/.ssh/google_compute_engine
-     StrictHostKeyChecking=no
-     UserKnownHostsFile=/dev/null
-```
-
-Install cmake
-```
-wget https://github.com/Kitware/CMake/releases/download/v3.24.0-rc3/cmake-3.24.0-rc3.tar.gz
-tar zxf cmake-3.24.0-rc3.tar.gz
-cd cmake-3.24.0-rc3
-sudo yum install openssl-devel -y
-./bootstrap
-make -j4
-sudo make install
-```
-
 Install `ghpc`
 - https://cloud.google.com/hpc-toolkit/docs/setup/install-dependencies
 
@@ -113,4 +128,21 @@ echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://
 sudo apt update
 sudo apt install terraform
 sudo apt install packer
+```
+
+```
+git clone git@github.com:GoogleCloudPlatform/hpc-toolkit.git
+```
+
+```
+ghpc create aphros.yaml -w
+terraform -chdir=aphros/primary init
+terraform -chdir=aphros/primary validate
+terraform -chdir=aphros/primary plan -no-color
+terraform -chdir=aphros/primary apply -no-color
+```
+
+Destroy the cluster
+```
+terraform -chdir=aphros/primary destroy -no-color
 ```
