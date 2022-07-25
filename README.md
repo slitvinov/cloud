@@ -8,6 +8,7 @@
 - Rahn, Tobias. Noise Estimation in HPC Cloud Networks. BS thesis. ETH Zurich, 2021.
   https://www.research-collection.ethz.ch/handle/20.500.11850/513171
 - https://www.intel.com/content/www/us/en/develop/documentation/installation-guide-for-intel-oneapi-toolkits-linux/top/installation/install-using-package-managers/yum-dnf-zypper.html
+- https://github.com/GoogleCloudPlatform/hpc-toolkit.git
 
 Enable Compute Engine API
 - https://console.developers.google.com/apis/api/compute.googleapis.com/overview?project=400748927902
